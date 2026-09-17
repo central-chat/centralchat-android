@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+      INTERNET, and nothing else.
+
+      RECORD_AUDIO (voice messages) and the location pair (a shared location)
+      are the app's to declare: a library that could widen your permission set
+      behind your back is a library whose next release is a Play Store review
+      conversation you did not schedule. Declare only what your line offers — an
+      undeclared use is simply never asked for.
+
+      No CAMERA in either place: declaring it makes Android *enforce* it for the
+      capture intent the composer's camera button fires, which is the one thing
+      it looks like it would enable.
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--
+      So the chat can retry the instant the device is online again instead of
+      waiting out its backoff. A NORMAL permission: never prompted for, nothing
+      to justify in review, and declared here so no app has to add it.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application>
+        <!--
+          The chat screen. Declared here so the integrating app's manifest stays
+          untouched.
+
+          `adjustResize` is the one attribute that fixes the composer-under-the-
+          keyboard bug. `screenSize|orientation|keyboardHidden` are handled
+          rather than recreated: a rotation that destroys the Activity would
+          detach the WebView and repaint the whole chat for a gesture that
+          should be free.
+        -->
+        <activity
+            android:name=".CentralChatActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboardHidden|keyboard"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+    </application>
+</manifest>
